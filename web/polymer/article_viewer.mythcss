@@ -43,30 +43,25 @@
 .article-meta {
   padding-top: 1.5em;
   border-top: 1px dotted var(--glass-gall);
-  margin-bottom: 1.5em;
+  border-bottom: 1px dotted var(--glass-gall);
+  margin-bottom: 2em;
+  padding-bottom: 1em;
 }
 .article-meta p {
   color: gray;
   font-size: var(--small-font-size);
 }
 
-.button-container {
-  display: inline-block;
-  width: 50%;
-  margin: 0;
-  padding: 0;
+.button-bar {
+  display: flex;
+  align-terms: stretch;
 }
 .button-bar-button {
-  width: 100%;
+  width: 50%;
 }
 
-.status-container {
-  position: fixed;
-  top: 0px;
-  z-index: 100;
-  text-align: center;
-}
-
+/* TODO center small image */
+/* TODO place large image */
 img {
-  max-width: 600px;
+  max-width: 100%;
 }

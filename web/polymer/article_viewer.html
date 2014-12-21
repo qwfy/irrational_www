@@ -6,10 +6,14 @@
 <link rel="stylesheet" href="article_viewer.css">
 <link rel="stylesheet" href="../css/common.css">
 
-<div><!--
---><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="random-next">Random</button></div><!--
---><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="ordered-next">Next</button></div><!--
---></div>
+<div class="button-bar">
+  <button class="button button-bar-button"
+          on-click={{loadModel}}
+          data-order="random">Random</button>
+  <button class="button button-bar-button"
+          on-click={{loadModel}}
+          data-order="ordered">Next</button>
+</div>
 
 <div class="title">
   <h3>{{model['title']}}</h3>
@@ -24,12 +28,14 @@
   <p>Tags: {{model['tags']}}</p>
 </div>
 
-<div><!--
---><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="random-next">Random</button></div><!--
---><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="ordered-next">Next</button></div><!--
---></div>
-
-
+<div class="button-bar">
+  <button class="button button-bar-button"
+          on-click={{loadModel}}
+          data-order="random">Random</button>
+  <button class="button button-bar-button"
+          on-click={{loadModel}}
+          data-order="ordered">Next</button>
+</div>
 
 </template>
 <script type="application/dart" src="article_viewer.dart"></script>

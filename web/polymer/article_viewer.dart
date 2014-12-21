@@ -32,6 +32,15 @@ class ArticleViewerElement extends PolymerElement {
     Map query = Uri.splitQueryString(queryString);
     String title = query.containsKey('article') ? query['article'] : null;
     loadModel(null, null, null, title);
+
+    window.onPopState.listen((PopStateEvent e) {
+      if (window.location.pathname.startsWith('/index.html') ||
+          window.location.pathname == '/' ) {
+        // pass
+      } else {
+        window.history.go(0);
+      }
+    });
   }
 
   String excludes = '00000000-0000-0000-0000-000000000000';
@@ -53,7 +62,7 @@ class ArticleViewerElement extends PolymerElement {
                        ? '00000000-0000-0000-0000-000000000000'
                        : model['article_id'];
       url += "all/id:${currentId}'next?";
-      if (e!=null && e.target.id=='random-next') {
+      if (e!=null && target.dataset['order']=='random') {
         url += 'order=random&excludes=${excludes}';
       } else {
         url += 'order=oldest_first';
@@ -87,8 +96,13 @@ class ArticleViewerElement extends PolymerElement {
       shadowRoot.querySelector('#source-info')
       .setInnerHtml(sourceInfo, validator: htmlValidator);
 
-      window.history.pushState(null, model['title']
-      ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
+      if (title != null) {
+        window.history.replaceState(null, model['title']
+        ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
+      } else {
+        window.history.pushState(null, model['title']
+        ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
+      }
       window.document.title = model['title'];
 
       if (e != null) {

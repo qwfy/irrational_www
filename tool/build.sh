@@ -15,6 +15,10 @@ for f in $(find $src_dir -type f -iregex .*mythcss |grep -v "build\/"); do
     myth --compress $f "$(dirname $f)/$(basename $f '.mythcss').css";
 done;
 
+echo '==> Changing permission'
+find $src_dir/web -type f -iregex .*\.html -exec chmod 644 {} \;
+find $src_dir/web -type f -iregex .*\.css -exec chmod 644 {} \;
+
 echo '==> Building'
 pub build
 
