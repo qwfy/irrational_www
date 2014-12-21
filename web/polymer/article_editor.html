@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="article-editor">
+<template>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="article_editor.css">
+
+<div class="container">
+  <button on-click="{{clear}}">Clear</button>
+  <button on-click="{{loadModel}}">Load</button>
+  <button on-click="{{save}}">Save</button>
+  <div class="input-field"><label>Opreation Status</label><span class="result-field">{{result}}</span></div>
+</div>
+
+
+<div class="container">
+
+  <div class="input-field"><label>Article ID</label><input value="{{model['article_id']}}" type="text" readonly></div>
+  <div class="input-field"><label>Title</label><input value="{{model['title']}}" type="text"></div>
+  <div class="input-field"><label>Language</label><input value="{{model['language']}}" type="text"></div>
+  <div class="input-field"><label>Tags</label><input value="{{model['tags']}}" type="text"></div>
+  <div class="input-field"><label>Submitter Name</label><input value="{{model['submitter']['name']}}" type="text"></div>
+  <div class="input-field"><label>Submitter Email</label><input value="{{model['submitter']['email']}}" type="text"></div>
+  <div class="input-field"><label>Submitter Link</label><input value="{{model['submitter']['link']}}" type="text"></div>
+  <div class="input-field"><label>Author Name</label><input value="{{model['author']['name']}}" type="text"></div>
+  <div class="input-field"><label>Author Email</label><input value="{{model['author']['email']}}" type="text"></div>
+  <div class="input-field"><label>Author Link</label><input value="{{model['author']['link']}}" type="text"></div>
+  <div class="input-field"><label>Source</label><input value="{{model['source']}}" type="text"></div>
+  <div class="input-field"><label>Content</label><textarea value="{{model['content']}}" type="text"></textarea></div>
+
+</div>
+
+</template>
+<script type="application/dart" src="article_editor.dart"></script>
+</polymer-element>

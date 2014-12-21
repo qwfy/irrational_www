@@ -1,0 +1,21 @@
+name: beauty
+dependencies:
+  barback: any
+  crypto: any
+  cookie: any
+  intl: any
+  logging: any
+  polymer: any
+  polymer_expressions: any
+  utf: any
+  uuid: any
+  markdown: any
+transformers:
+- polymer:
+    entry_points:
+    - web/index.html
+    - web/create_or_update_an_article.html
+    inline_stylesheets:
+      web/css/common.css: false
+- $dart2js:
+    minify: true

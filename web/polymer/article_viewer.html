@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<link rel="import" href="packages/polymer/polymer.html">
+<polymer-element name="article-viewer">
+<template>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="article_viewer.css">
+<link rel="stylesheet" href="../css/common.css">
+
+<div><!--
+--><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="random-next">Random</button></div><!--
+--><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="ordered-next">Next</button></div><!--
+--></div>
+
+<div class="title">
+  <h3>{{model['title']}}</h3>
+</div>
+
+<div id="article-content">
+  {{model['content']}}
+</div>
+
+<div class="article-meta">
+  <p id="source-info"></p>
+  <p>Tags: {{model['tags']}}</p>
+</div>
+
+<div><!--
+--><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="random-next">Random</button></div><!--
+--><div class="button-container"><button class="button button-bar-button" on-click={{loadModel}} id="ordered-next">Next</button></div><!--
+--></div>
+
+
+
+</template>
+<script type="application/dart" src="article_viewer.dart"></script>
+</polymer-element>

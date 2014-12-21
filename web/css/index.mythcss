@@ -1,0 +1,57 @@
+/* CSS Global Vars Include */
+:root {
+  --base-font-size   : 10px;
+  --small-font-size  : 12px;
+  --normal-font-size : 14px;
+  --large-font-size  : 16px;
+  --sans-serif       : "Open Sans", Verdana, Geneva, sans-serif;
+  --serif            : Georgia, "Times New Roman", Times, serif;
+  --monospace        : "Courier New", Courier, monospace;
+  --primary-color    : #085A78;
+  --bewitched-tree   : #24CCB3;
+  --mystical-green   : #90CCC4;
+  --light-heart-blue : #A4EBE5;
+  --glass-gall       : #C3ECF2;
+  --silly-fizz       : #BAEFD1;
+  --brain-sand       : #D8D3B5;
+  --mustard-addicted : #D6BC7F;
+  --magic-powder     : #EBD0B3;
+  --true-blush       : #F2AEA4;
+  --merry-cranesbill : #FC626E;
+  --short-bg-transition: background 0.18s linear;
+}
+/* CSS Global Vars Include */
+
+body {
+  margin: 1em;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.article {
+  padding-bottom: 2em;
+  border-bottom: 1px dotted var(--glass-gall);
+}
+
+.why-this-site {
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding: 1em;
+  background-color: var(--glass-gall);
+  border-radius: 1px;
+  border: 1px solid var(--glass-gall);
+}
+
+.aixon-footer {
+  padding: 1em;
+  border-top: 1px dotted var(--glass-gall);
+  color: var(--primary-color);
+}
+
+.aixon-footer .flex-container {
+  display: flex;
+  justify-content: flex-end;
+}

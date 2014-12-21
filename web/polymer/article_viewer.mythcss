@@ -1,0 +1,72 @@
+/* CSS Global Vars Include */
+:root {
+  --base-font-size   : 10px;
+  --small-font-size  : 12px;
+  --normal-font-size : 14px;
+  --large-font-size  : 16px;
+  --sans-serif       : "Open Sans", Verdana, Geneva, sans-serif;
+  --serif            : Georgia, "Times New Roman", Times, serif;
+  --monospace        : "Courier New", Courier, monospace;
+  --primary-color    : #085A78;
+  --bewitched-tree   : #24CCB3;
+  --mystical-green   : #90CCC4;
+  --light-heart-blue : #A4EBE5;
+  --glass-gall       : #C3ECF2;
+  --silly-fizz       : #BAEFD1;
+  --brain-sand       : #D8D3B5;
+  --mustard-addicted : #D6BC7F;
+  --magic-powder     : #EBD0B3;
+  --true-blush       : #F2AEA4;
+  --merry-cranesbill : #FC626E;
+  --short-bg-transition: background 0.18s linear;
+}
+/* CSS Global Vars Include */
+
+.title {
+  margin-top: 2.5em;
+  padding: 0;
+  padding-bottom: 1.5em;
+  border-bottom: 1px dotted var(--glass-gall);
+}
+.title h3 {
+  font-family: var(--serif);
+  font-size: var(--large-font-size);
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+}
+
+#article-content {
+  margin-bottom: 1.5em;
+}
+
+.article-meta {
+  padding-top: 1.5em;
+  border-top: 1px dotted var(--glass-gall);
+  margin-bottom: 1.5em;
+}
+.article-meta p {
+  color: gray;
+  font-size: var(--small-font-size);
+}
+
+.button-container {
+  display: inline-block;
+  width: 50%;
+  margin: 0;
+  padding: 0;
+}
+.button-bar-button {
+  width: 100%;
+}
+
+.status-container {
+  position: fixed;
+  top: 0px;
+  z-index: 100;
+  text-align: center;
+}
+
+img {
+  max-width: 600px;
+}
