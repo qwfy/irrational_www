@@ -50,8 +50,9 @@ class ArticleViewerElement extends PolymerElement {
   String excludes = '00000000-0000-0000-0000-000000000000';
 
   void loadModel([Event e, var detail, Node target, String title=null]) {
+    // Take a deep breath, this is a long function.
     // The e != null test is used to determine whether this function
-    // is called manually or is called by click a button.
+    // is called manually (false) or is called by click a button (true).
 
     String originalStatus = e!=null ? target.innerHtml : '';
     if (e != null) {
@@ -87,21 +88,25 @@ class ArticleViewerElement extends PolymerElement {
       // generate author or original source of this article
       String sourceInfo = '';
       if (model['author']['name'] != '') {
-        sourceInfo += 'Author is ';
+        sourceInfo += 'Original author is ';
         sourceInfo += model['author']['link'] != ''
         ? '<a href="${model["author"]["link"]}" target="_blank">'
         + '${model["author"]["name"]}'
         + '</a>'
         : '${model["author"]["name"]}';
-      } else {
+        sourceInfo += '. ';
+      }
+      if (model['source'] != '') {
         sourceInfo += 'Source is ';
         sourceInfo += '<a href="${model["source"]}" target="_blank">';
         sourceInfo += '${Uri.parse(model["source"]).host}';
         sourceInfo += '</a>';
+        sourceInfo += '. ';
       }
-      sourceInfo += ', submitted on ${model["submit_time"]}.';
+      sourceInfo += 'Submitted on ${model["submit_time"]}.';
       shadowRoot.querySelector('#source-info')
       .setInnerHtml(sourceInfo, validator: htmlValidator);
+
 
       if (title != null) {
         window.history.replaceState(null, model['title']
@@ -129,7 +134,7 @@ class ArticleViewerElement extends PolymerElement {
   }
 
   void resizeVideo([Event e]) {
-    // this will resize <iframe width= height=>, which is used by YouTube
+    // This will resize <iframe width= height=>, which is used by YouTube.
     int parentWidth = this.parentNode.clientWidth;
     this.shadowRoot.querySelectorAll('iframe').forEach((IFrameElement iframe) {
       String oldWidth = iframe.style.width.replaceAll('px', '');

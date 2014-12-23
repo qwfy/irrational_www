@@ -15,10 +15,6 @@ for f in $(find $src_dir -type f -iregex .*mythcss |grep -v "build\/"); do
     myth --compress $f "$(dirname $f)/$(basename $f '.mythcss').css";
 done;
 
-echo '==> Changing permission'
-find $src_dir/web -type f -iregex .*\.html -exec chmod 644 {} \;
-find $src_dir/web -type f -iregex .*\.css -exec chmod 644 {} \;
-
 echo '==> Building'
 pub build
 
@@ -29,6 +25,9 @@ find $built_web -type f -iregex .*\.js\.map           -exec rm "{}" \;
 find $built_web -type f -iregex .*\.precompiled\.js   -exec rm "{}" \;
 find $built_web -type f -iregex .*\.mythcss           -exec rm "{}" \;
 find $built_web -type f -iregex .*\._buildLogs\..*    -exec rm "{}" \;
+
+echo '==> Making Apache server newly compiled JS version'
+cd /var/www/beauty/ && sudo rm html && sudo ln -s /data/src/beauty/www/build/web ./html && ls -l && cd -
 
 cd "$org_dir"
 echo '==> Done'
