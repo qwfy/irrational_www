@@ -41,6 +41,10 @@ class ArticleViewerElement extends PolymerElement {
         window.history.go(0);
       }
     });
+
+    window.onResize.listen((Event e) {
+      resizeVideo(e);
+    });
   }
 
   String excludes = '00000000-0000-0000-0000-000000000000';
@@ -73,8 +77,11 @@ class ArticleViewerElement extends PolymerElement {
     .then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
       model = resp;
+
       shadowRoot.querySelector('#article-content')
       .setInnerHtml(markdownToHtml(model['content']), validator: htmlValidator);
+      resizeVideo();
+
       excludes += ',${model['article_id']}';
 
       // generate author or original source of this article
@@ -118,6 +125,21 @@ class ArticleViewerElement extends PolymerElement {
           window.location.href = 'http://${FQDN}/404.html';
         }
       }
+    });
+  }
+
+  void resizeVideo([Event e]) {
+    // this will resize <iframe width= height=>, which is used by YouTube
+    int parentWidth = this.parentNode.clientWidth;
+    this.shadowRoot.querySelectorAll('iframe').forEach((IFrameElement iframe) {
+      String oldWidth = iframe.style.width.replaceAll('px', '');
+      String oldHeight = iframe.style.height.replaceAll('px', '');
+      if (oldWidth=='' || oldHeight=='') {
+        oldWidth = '${iframe.width}';
+        oldHeight = '${iframe.height}';
+      }
+      iframe.style.height = '${parentWidth ~/ (int.parse(oldWidth)/int.parse(oldHeight))}px';
+      iframe.style.width = '${parentWidth}px';
     });
   }
 
