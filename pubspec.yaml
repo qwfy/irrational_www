@@ -1,4 +1,4 @@
-name: beauty
+name: irrational
 dependencies:
   barback: any
   crypto: any

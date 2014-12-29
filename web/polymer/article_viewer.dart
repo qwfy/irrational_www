@@ -1,6 +1,6 @@
-library beauty.web.polymer.article_viewer;
+library irrational.web.polymer.article_viewer;
 
-import 'package:beauty/beauty.dart';
+import 'package:irrational/irrational.dart';
 import 'package:markdown/markdown.dart' show markdownToHtml;
 
 @CustomTag('article-viewer')
@@ -20,25 +20,25 @@ class ArticleViewerElement extends PolymerElement {
     , 'author'      : {'name': '', 'email': '', 'link': ''}
     });
 
+  @published String initial = null;
+
   @override
   void attached() {
     super.attached();
 
-    // If there is ?article=<title> in url, load this article,
-    // else load the latest one.
-    String queryString = window.location.search.startsWith('?')
-    ? window.location.search.substring(1)
-    : window.location.search;
-    Map query = Uri.splitQueryString(queryString);
-    String title = query.containsKey('article') ? query['article'] : null;
-    loadModel(null, null, null, title);
+    String title = initial=='' ? null : initial;
+    loadModel(null, null, null, title, true);
 
     window.onPopState.listen((PopStateEvent e) {
-      if (window.location.pathname.startsWith('/index.html') ||
-          window.location.pathname == '/' ) {
-        // pass
+      e.preventDefault();
+      String pathName = window.location.pathname;
+      if (pathName.startsWith('/articles/')) {
+        String title = pathName.substring('/articles/'.length);
+        loadModel(null, null, null, title, false);
+      } else if (pathName == '/') {
+        window.location.reload();
       } else {
-        window.history.go(0);
+        null;
       }
     });
 
@@ -49,14 +49,20 @@ class ArticleViewerElement extends PolymerElement {
 
   String excludes = '00000000-0000-0000-0000-000000000000';
 
-  void loadModel([Event e, var detail, Node target, String title=null]) {
+  void loadModel([ Event e, var detail, Node target
+                 , String title=null
+                 , bool pushState=true ]) {
     // Take a deep breath, this is a long function.
+
     // The e != null test is used to determine whether this function
     // is called manually (false) or is called by click a button (true).
+    bool clicked = e!=null;
 
-    String originalStatus = e!=null ? target.innerHtml : '';
-    if (e != null) {
-      target.innerHtml = 'Loading ...';
+    // save button status for later restore
+    String originalStatus = clicked ? (target as Element).innerHtml : '';
+
+    if (clicked) {
+      (target as Element).innerHtml = 'Loading ...';
     }
 
     String url = '${WSGI}/articles/';
@@ -67,7 +73,7 @@ class ArticleViewerElement extends PolymerElement {
                        ? '00000000-0000-0000-0000-000000000000'
                        : model['article_id'];
       url += "all/id:${currentId}'next?";
-      if (e!=null && target.dataset['order']=='random') {
+      if (clicked && (target as Element).dataset['order']=='random') {
         url += 'order=random&excludes=${excludes}';
       } else {
         url += 'order=oldest_first';
@@ -107,27 +113,23 @@ class ArticleViewerElement extends PolymerElement {
       shadowRoot.querySelector('#source-info')
       .setInnerHtml(sourceInfo, validator: htmlValidator);
 
-
-      if (title != null) {
-        window.history.replaceState(null, model['title']
-        ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
-      } else {
+      if (pushState) {
         window.history.pushState(null, model['title']
         ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
+        (window.document as HtmlDocument).title = model['title'];
       }
-      window.document.title = model['title'];
 
-      if (e != null) {
-        target.innerHtml = originalStatus;
+      if (clicked) { // restore button status
+        (target as Element).innerHtml = originalStatus;
       }
     }).catchError((Error error) {
-      if (e != null) {
-        target.innerHtml = error.target.responseText;
+      if (clicked) {
+        (target as Element).innerHtml = error.target.responseText;
       }
       if (error.target is HttpRequest) {
         HttpRequest resp = error.target;
         if (resp.status == HttpStatus.NOT_FOUND && title != null) {
-          window.location.href = 'http://${FQDN}/404.html';
+          window.location.href = '/404.html';
         }
       }
     });
@@ -135,7 +137,7 @@ class ArticleViewerElement extends PolymerElement {
 
   void resizeVideo([Event e]) {
     // This will resize <iframe width= height=>, which is used by YouTube.
-    int parentWidth = this.parentNode.clientWidth;
+    int parentWidth = (this.parentNode as Element).clientWidth;
     this.shadowRoot.querySelectorAll('iframe').forEach((IFrameElement iframe) {
       String oldWidth = iframe.style.width.replaceAll('px', '');
       String oldHeight = iframe.style.height.replaceAll('px', '');

@@ -4,30 +4,37 @@ set -e
 clear
 
 org_dir=$(pwd)
-src_dir='/data/src/beauty/www'
-cd "$src_dir"
+script_dir=$(cd "$( dirname "$0" )" && pwd)
+cd "$script_dir"
+cd ..
+echo "==> Changed directory to project root $(pwd)"
 
-pub get
+
+echo '==> Cleaning previous build'
+rm -rf build/
+find ./ -type l -iregex .*packages -exec rm -rf "{}" \;
+rm -rf packages/
 
 echo '==> Build Myth CSS'
-for f in $(find $src_dir -type f -iregex .*mythcss |grep -v "build\/"); do
+for f in $(find ./ -type f -iregex .*mythcss |grep -v "build\/"); do
     echo $f;
     myth --compress $f "$(dirname $f)/$(basename $f '.mythcss').css";
 done;
 
-echo '==> Building'
-pub build
+echo '==> Running pub build'
+cygstart -w launcher.bat pub.bat get
+cygstart -w launcher.bat pub.bat build
 
 echo '==> Cleaning'
-built_web="$src_dir/build/web"
+build_web='./build/web/'
 
-find $built_web -type f -iregex .*\.js\.map           -exec rm "{}" \;
-find $built_web -type f -iregex .*\.precompiled\.js   -exec rm "{}" \;
-find $built_web -type f -iregex .*\.mythcss           -exec rm "{}" \;
-find $built_web -type f -iregex .*\._buildLogs\..*    -exec rm "{}" \;
+find $build_web -type f -iregex .*\.js\.map           -exec rm "{}" \;
+find $build_web -type f -iregex .*\.precompiled\.js   -exec rm "{}" \;
+find $build_web -type f -iregex .*\.mythcss           -exec rm "{}" \;
+find $build_web -type f -iregex .*\._buildLogs\..*    -exec rm "{}" \;
 
-echo '==> Making Apache server newly compiled JS version'
-cd /var/www/beauty/ && sudo rm html && sudo ln -s /data/src/beauty/www/build/web ./html && ls -l && cd -
+echo '==> SSH into dev host to make Apache serve the newly compiled JS version'
+ssh admin@dev 'cd /var/www/irrational/ && sudo rm html && sudo ln -s /home/admin/irrational/www/build/web ./html && ls -l && cd -'
 
 cd "$org_dir"
 echo '==> Done'

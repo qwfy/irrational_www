@@ -2,7 +2,7 @@
 
 set -e
 
-search_root=/data/src/beauty/www/
+search_root=/data/src/irrational/www/
 sig='\/\* CSS Global Vars Include \*\/'
 repl=''\
 ':root {\n'\

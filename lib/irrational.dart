@@ -1,4 +1,4 @@
-library beauty.beauty;
+library irrational.irrational;
 
 import 'dart:html';
 import 'dart:convert';
@@ -10,7 +10,6 @@ export 'package:polymer/polymer.dart';
 
 
 final String WSGI = '/wsgi';
-final String FQDN = 'beauty.aixon.co';
 
 
 abstract class HttpStatus {

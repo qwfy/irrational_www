@@ -1,6 +1,6 @@
-library beauty.web.polymer.article_editor;
+library irrational.web.polymer.article_editor;
 
-import 'package:beauty/beauty.dart';
+import 'package:irrational/irrational.dart';
 
 @CustomTag('article-editor')
 class ArticleEditorElement extends PolymerElement {

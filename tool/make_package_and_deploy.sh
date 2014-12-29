@@ -1,33 +1,41 @@
 #!/bin/bash
 
-set -e
+release_dir='/D/Documents/Irrational/release'
+cert='/D/Documents/Irrational/aixon.pem'
 
-echo "==> Please make sure commited"
-git status
-echo "-----------------------------"
+set -e
+clear
 
 org_dir=$(pwd)
-src_dir='/data/src/beauty/www'
+script_dir=$(cd "$( dirname "$0" )" && pwd)
+cd "$script_dir"
+cd ..
+echo "==> Changed directory to project root $(pwd)"
 
-cd "$src_dir"
-prod_name="beauty_www_$(date '+%Y-%m-%d_%H-%M-%S')_$(git rev-parse HEAD | cut -b 1-7).tgz"
-prod_path="/data/src/beauty/release/$prod_name"
+echo "==> Check if git is commited"
+# if [ -n "$(git status --porcelain)" ]; then 
+#   echo 'Please `git commit` first'
+#   exit 1
+# fi
+
+prod_name="irrational_www_$(date '+%Y-%m-%d_%H-%M-%S')_$(git rev-parse HEAD | cut -b 1-7).tgz"
+prod_path="$release_dir/$prod_name"
 
 echo "==> Creating archive: $prod_path"
-cd "$src_dir/build/web/"
+cd build/web/
 tar -czf "$prod_path" *
 
 echo "==> Uploading to server"
-scp -i /data/src/beauty/aixon.pem "$prod_path" incomplete@54.84.160.165:/home/incomplete/release/
+scp -i $cert "$prod_path" incomplete@irrational.aixon.co:/home/incomplete/release/
 
 echo "==> Deploying"
-ssh -T -i /data/src/beauty/aixon.pem incomplete@54.84.160.165 << SSHCMD
+ssh -T -i $cert incomplete@irrational.aixon.co << SSHCMD
 set -e
 sudo su
 
 service apache2 stop
-rm -rf /var/www/beauty/html/*
-cd /var/www/beauty/html/
+rm -rf /var/www/irrational/html/*
+cd /var/www/irrational/html/
 cp /home/incomplete/release/$prod_name ./
 tar xzf $prod_name
 rm $prod_name
