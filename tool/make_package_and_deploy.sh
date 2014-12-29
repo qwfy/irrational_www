@@ -1,7 +1,6 @@
 #!/bin/bash
 
 release_dir='/D/Documents/Irrational/release'
-cert='/D/Documents/Irrational/aixon.pem'
 
 set -e
 clear
@@ -26,10 +25,10 @@ cd build/web/
 tar -czf "$prod_path" *
 
 echo "==> Uploading to server"
-scp -i $cert "$prod_path" incomplete@irrational.aixon.co:/home/incomplete/release/
+scp "$prod_path" incomplete@irrational.aixon.co:/home/incomplete/release/
 
 echo "==> Deploying"
-ssh -T -i $cert incomplete@irrational.aixon.co << SSHCMD
+ssh -T incomplete@irrational.aixon.co << SSHCMD
 set -e
 sudo su
 
