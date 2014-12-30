@@ -60,8 +60,10 @@
   width: 50%;
 }
 
-/* TODO center small image */
-/* TODO place large image */
 img {
   max-width: 100%;
+
+  /* center the small image */
+  display: block;
+  margin: auto;
 }
