@@ -26,7 +26,8 @@ class ArticleViewerElement extends PolymerElement {
   void attached() {
     super.attached();
 
-    String title = initial=='' ? null : initial;
+    String title = (initial=='' || initial=='{_ title _}')
+    ? null : initial;
     loadModel(null, null, null, title, true);
 
     window.onPopState.listen((PopStateEvent e) {
@@ -70,8 +71,8 @@ class ArticleViewerElement extends PolymerElement {
       url += title;
     } else {
       String currentId = model['article_id'] == ''
-                       ? '00000000-0000-0000-0000-000000000000'
-                       : model['article_id'];
+      ? '00000000-0000-0000-0000-000000000000'
+      : model['article_id'];
       url += "all/id:${currentId}'next?";
       if (clicked && (target as Element).dataset['order']=='random') {
         url += 'order=random&excludes=${excludes}';

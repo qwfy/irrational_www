@@ -12,10 +12,10 @@ cd ..
 echo "==> Changed directory to project root $(pwd)"
 
 echo "==> Check if git is commited"
-# if [ -n "$(git status --porcelain)" ]; then 
-#   echo 'Please `git commit` first'
-#   exit 1
-# fi
+if [ -n "$(git status --porcelain)" ]; then 
+  echo 'Please `git commit` first'
+  exit 1
+fi
 
 prod_name="irrational_www_$(date '+%Y-%m-%d_%H-%M-%S')_$(git rev-parse HEAD | cut -b 1-7).tgz"
 prod_path="$release_dir/$prod_name"
