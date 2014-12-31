@@ -18,7 +18,8 @@
   --magic-powder     : #EBD0B3;
   --true-blush       : #F2AEA4;
   --merry-cranesbill : #FC626E;
-  --short-bg-transition: background 0.18s linear;
+  --hr               : 1px solid #C3ECF2;
+  --light            : 300;
 }
 /* CSS Global Vars Include */
 

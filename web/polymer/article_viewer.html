@@ -1,40 +1,59 @@
 <!DOCTYPE html>
 <link rel="import" href="packages/polymer/polymer.html">
+<link rel="import" href="packages/paper_elements/paper_button.html">
+<link rel="import" href="packages/core_elements/core_icons.html">
+<link rel="import" href="packages/core_elements/av_icons.html">
+<link rel="import" href="packages/core_elements/social_icons.html">
+<link rel="import" href="packages/core_elements/core_icon.html">
 <polymer-element name="article-viewer">
 <template>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="article_viewer.css">
 <link rel="stylesheet" href="../css/common.css">
+<link rel="stylesheet" href="article_viewer.css">
 
-<div class="button-bar">
-  <button class="button button-bar-button"
-          on-click={{loadModel}}
-          data-order="random">Random</button>
-  <button class="button button-bar-button"
-          on-click={{loadModel}}
-          data-order="ordered">Next</button>
+<div class="buttons">
+  <div class="group">
+    <paper-button on-click="{{loadModel}}" data-order="random">
+      <span>Random</span>
+      <core-icon icon="av:shuffle"></core-icon>
+    </paper-button>
+    <paper-button on-click="{{loadModel}}" data-order="ordered">
+      <span>Next</span>
+      <core-icon icon="chevron-right"></core-icon>
+    </paper-button>
+  </div>
 </div>
 
-<div class="title">
+<div class="article-title">
   <h3>{{model['title']}}</h3>
 </div>
 
-<div id="article-content">
+<div class="article-content">
   {{model['content']}}
 </div>
 
 <div class="article-meta">
-  <p id="source-info"></p>
-  <p>Tags: {{model['tags']}}</p>
+  <div id="source-info"></div>
+  <div>Tags: {{model['tags']}}</div>
 </div>
 
-<div class="button-bar">
-  <button class="button button-bar-button"
-          on-click={{loadModel}}
-          data-order="random">Random</button>
-  <button class="button button-bar-button"
-          on-click={{loadModel}}
-          data-order="ordered">Next</button>
+<div class="buttons last">
+  <div class="group">
+    <paper-button>
+      <span><a href="/writer.html" target="_blank">Share a beautiful thing</a></span>
+      <core-icon icon="social:share"></core-icon>
+    </paper-button>
+  </div>
+  <div class="group">
+    <paper-button on-click="{{loadModel}}" data-order="random">
+      <span>Random</span>
+      <core-icon icon="av:shuffle"></core-icon>
+    </paper-button>
+    <paper-button on-click="{{loadModel}}" data-order="ordered">
+      <span>Next</span>
+      <core-icon icon="chevron-right"></core-icon>
+    </paper-button>
+  </div>
 </div>
 
 </template>

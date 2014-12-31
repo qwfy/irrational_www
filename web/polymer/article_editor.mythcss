@@ -18,66 +18,110 @@
   --magic-powder     : #EBD0B3;
   --true-blush       : #F2AEA4;
   --merry-cranesbill : #FC626E;
-  --short-bg-transition: background 0.18s linear;
+  --hr               : 1px solid #C3ECF2;
+  --light            : 300;
 }
 /* CSS Global Vars Include */
-
-
-* {
-  font-family: "Envy Code R";
-  font-size: 14px;
-}
-
-div {
-  border: 1px solid #d9d9d9;
-}
-
-.input-field {
-  padding-left: 1em;
-  padding-right: 1em;
-  margin-top: 1em;
-}
-
-.container {
-  margin-top: 1.4em;
-  padding: 0.4em;
-  padding-left: 1em;
-  padding-right: 1em;
-}
-
-label {
-  display: inline-block;
-  min-width: 9em;
-}
-
-.result-field{
-  line-height: 1.4em;
-  border-left: 1px solid #d9d9d9;
-  padding-left: 1em;
-  display: inline-block;
-  padding-top: 0.4em;
-  padding-bottom: 0.4em;
-  display: inline-block;
+:host {
+  display: block;
 }
 
 input {
-  line-height: 1.4em;
-  width: 40em;
+  width: 100%;
   outline: none;
   border: none;
-  border-left: 1px solid #d9d9d9;
-  padding-left: 1em;
-  display: inline-block;
-  padding-top: 0.4em;
-  padding-bottom: 0.4em;
+  border-bottom: 1px solid #4059A9;
+  padding: 0.4em 0;
+  line-height: 1em;
+  margin-bottom: 1px;
 }
 
 textarea {
-  height: 20em;
-  width: 50em;
+  height: 10em;
+  width: 100%;
+  max-width: 100%;
   outline: none;
+  border: 1px solid #4059A9;
   border: none;
-  border-left: 1px solid #d9d9d9;
-  padding-left: 1em;
+  border-bottom: 1px solid #4059A9;
+  margin-bottom: 1px;
+}
+input:focus, textarea:focus {
+  border-bottom-width: 2px;
+  margin-bottom: 0px;
+}
+input:required:invalid, input:focus:invalid,
+textarea:required:invalid, textarea:focus:invalid {
+  border-bottom-color: red;
 }
 
+.article-field {
+  border: 1px solid var(--silly-fizz);
+  padding: 1em 2em;
+  margin-bottom: 2em;
+}
+
+.field-label {
+  margin: 0;
+  padding: 0 1em;
+  line-height: 1em;
+  position: relative;
+  top: -1.5em;
+  left: -1em;
+  background-color: white;
+}
+
+.field-comment {
+  color: grey;
+  margin-bottom: 1em;
+}
+
+.ml05 {
+  display: inline-block;
+  margin-left: 0.5em;
+}
+
+.mb1 {
+  margin-bottom: 1em;
+}
+
+.mr1 {
+  margin-right: 1em;
+}
+
+.mb2 {
+  margin-bottom: 2em;
+}
+
+.mb4 {
+  margin-bottom: 4em;
+}
+
+.admin-only {
+  display: none;
+  padding: 1em 2em;
+  border: 1px solid var(--silly-fizz);
+}
+.admin-only input {
+  width: 24em;
+  display: inline-block;
+}
+.admin-only label {
+  margin: 0;
+  padding: 0 1em;
+  line-height: 1em;
+  position: relative;
+  top: -1.5em;
+  left: -1em;
+  background-color: white;
+}
+
+
+#format-help-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+}
+#format-help-header span {
+  display: inline-block;
+}

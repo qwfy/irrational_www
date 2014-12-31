@@ -9,16 +9,16 @@ class ArticleViewerElement extends PolymerElement {
   ArticleViewerElement.created() : super.created() { }
 
   @observable Map model = toObservable(
-    { 'article_id'  : ''
-    , 'title'       : ''
-    , 'content'     : ''
-    , 'language'    : ''
-    , 'tags'        : ''
-    , 'submit_time' : ''
-    , 'source'      : ''
-    , 'submitter'   : {'name': '', 'email': '', 'link': ''}
-    , 'author'      : {'name': '', 'email': '', 'link': ''}
-    });
+  { 'article_id'  : ''
+  , 'title'       : ''
+  , 'content'     : ''
+  , 'language'    : ''
+  , 'tags'        : ''
+  , 'submit_time' : ''
+  , 'source'      : ''
+  , 'submitter'   : {'name': '', 'email': '', 'link': ''}
+  , 'author'      : {'name': '', 'email': '', 'link': ''}
+  });
 
   @published String initial = null;
 
@@ -59,11 +59,16 @@ class ArticleViewerElement extends PolymerElement {
     // is called manually (false) or is called by click a button (true).
     bool clicked = e!=null;
 
-    // save button status for later restore
-    String originalStatus = clicked ? (target as Element).innerHtml : '';
+    HtmlElement button;
+    if (clicked) {
+      button = (target as Element).querySelector('span');
+    }
+
+    // Save button status so that I can restore it later.
+    String originalStatus = clicked ? button.innerHtml : '';
 
     if (clicked) {
-      (target as Element).innerHtml = 'Loading ...';
+      button.innerHtml = 'Loading ...';
     }
 
     String url = '${WSGI}/articles/';
@@ -86,13 +91,13 @@ class ArticleViewerElement extends PolymerElement {
       Map resp = JSON.decode(response.responseText);
       model = resp;
 
-      shadowRoot.querySelector('#article-content')
+      shadowRoot.querySelector('.article-content')
       .setInnerHtml(markdownToHtml(model['content']), validator: htmlValidator);
       resizeVideo();
 
       excludes += ',${model['article_id']}';
 
-      // generate author or original source of this article
+      // Generate author or original source of this article
       String sourceInfo = '';
       if (model['author']['name'] != '') {
         sourceInfo += 'Original author is ';
@@ -120,18 +125,26 @@ class ArticleViewerElement extends PolymerElement {
         (window.document as HtmlDocument).title = model['title'];
       }
 
-      if (clicked) { // restore button status
-        (target as Element).innerHtml = originalStatus;
+      // restore button status
+      if (clicked) {
+        button.innerHtml = originalStatus;
       }
     }).catchError((Error error) {
-      if (clicked) {
-        (target as Element).innerHtml = error.target.responseText;
-      }
-      if (error.target is HttpRequest) {
-        HttpRequest resp = error.target;
-        if (resp.status == HttpStatus.NOT_FOUND && title != null) {
-          window.location.href = '/404.html';
-        }
+      HttpRequest resp = error.target;
+      if (resp.status == HttpStatus.NOT_FOUND && title != null) {
+        window.location.href = '/404.html';
+      } else if (resp.status == HttpStatus.NOT_FOUND && clicked) {
+        String kind = (target as Element).dataset['order'];
+        shadowRoot.querySelectorAll('paper-button[data-order="${kind}"]').forEach((elem) {
+          elem.setAttribute('disabled', '');
+          elem.querySelector('span').innerHtml = kind=='ordered'
+          ? 'Reached Oldest'
+          : 'No more';
+        });
+      } else if (clicked) {
+        button.innerHtml = 'Error';
+      } else {
+        null;
       }
     });
   }
@@ -146,9 +159,10 @@ class ArticleViewerElement extends PolymerElement {
         oldWidth = '${iframe.width}';
         oldHeight = '${iframe.height}';
       }
-      iframe.style.height = '${parentWidth ~/ (int.parse(oldWidth)/int.parse(oldHeight))}px';
       iframe.style.width = '${parentWidth}px';
+      iframe.style.height = '${parentWidth ~/ (int.parse(oldWidth)/int.parse(oldHeight))}px';
     });
   }
+
 
 }

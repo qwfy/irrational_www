@@ -68,4 +68,6 @@ FormData mapToForm(Map source) {
 final NodeValidatorBuilder htmlValidator = new NodeValidatorBuilder.common()
 ..allowElement('a', attributes: ['href'])
 ..allowElement('img', attributes: ['src'])
-..allowElement('iframe', attributes: ['allowfullscreen', 'src', 'frameborder']);
+..allowElement('iframe', attributes: ['allowfullscreen', 'src', 'frameborder'])
+..allowElement('span', attributes: ['style'])
+..allowElement('core-icon', attributes: ['icon', 'role', 'aria-label', 'style']);

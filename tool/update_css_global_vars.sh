@@ -1,8 +1,15 @@
 #!/bin/bash
 
 set -e
+clear
 
-search_root=/data/src/irrational/www/
+org_dir=$(pwd)
+script_dir=$(cd "$( dirname "$0" )" && pwd)
+cd "$script_dir"
+cd ..
+echo "==> Changed directory to project root $(pwd)"
+
+
 sig='\/\* CSS Global Vars Include \*\/'
 repl=''\
 ':root {\n'\
@@ -24,14 +31,27 @@ repl=''\
 '  --magic-powder     : #EBD0B3;\n'\
 '  --true-blush       : #F2AEA4;\n'\
 '  --merry-cranesbill : #FC626E;\n'\
-'  --short-bg-transition: background 0.18s linear;\n'\
+'  --hr               : 1px solid #C3ECF2;\n'\
+'  --light            : 300;\n'\
 '}'
 
 
+echo '==> Replacing'
 while read F; do
     echo "$F"
     tmpF="$F"'.sedtmp'
     cp "$F" "$tmpF"
     sed -n '1h;1!H;${;g;s/\('"$sig"'\).*\('"$sig"'\)/\1\n'"$repl"'\n\2/g;p;}' "$tmpF" > "$F"
     rm "$tmpF"
-done < <(find "$search_root" -type f -iregex .*mythcss -exec grep -H -i "$sig" "{}" \; | cut -d ':' -f 1 | uniq)
+done < <(find ./ -type f -iregex .*mythcss -exec grep -H -i "$sig" "{}" \; | cut -d ':' -f 1 | uniq)
+
+
+echo '==> Build all Myth CSS'
+for f in $(find ./ -type f -iregex .*mythcss |grep -v "build\/"); do
+    echo $f;
+    myth --compress $f "$(dirname $f)/$(basename $f '.mythcss').css";
+done;
+
+
+cd $org_dir 
+echo '==> Done'

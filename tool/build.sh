@@ -15,14 +15,7 @@ rm -rf build/
 find ./ -type l -iregex .*packages -exec rm -rf "{}" \;
 rm -rf packages/
 
-echo '==> Build Myth CSS'
-for f in $(find ./ -type f -iregex .*mythcss |grep -v "build\/"); do
-    echo $f;
-    myth --compress $f "$(dirname $f)/$(basename $f '.mythcss').css";
-done;
-
 echo '==> Running pub build'
-cygstart -w launcher.bat pub.bat get
 cygstart -w launcher.bat pub.bat build
 
 echo '==> Cleaning'

@@ -18,46 +18,61 @@
   --magic-powder     : #EBD0B3;
   --true-blush       : #F2AEA4;
   --merry-cranesbill : #FC626E;
-  --short-bg-transition: background 0.18s linear;
+  --hr               : 1px solid #C3ECF2;
+  --light            : 300;
 }
 /* CSS Global Vars Include */
 
-.title {
-  margin-top: 2.5em;
+.buttons {
+  margin: 0;
   padding: 0;
-  padding-bottom: 1.5em;
-  border-bottom: 1px dotted var(--glass-gall);
+  display: flex;
+  justify-content: flex-end;
 }
-.title h3 {
-  font-family: var(--serif);
-  font-size: var(--large-font-size);
-  font-weight: bold;
+
+.buttons .group {
+  display: flex;
+  justify-content: flex-end;
+}
+@media only screen and (min-device-width: 530px) {
+  .buttons {
+    flex-direction: row;
+  }
+}
+@media only screen and (max-device-width: 529px) {
+  .buttons {
+    flex-direction: column-reverse;
+  }
+}
+
+
+.buttons span {
+  display: inline-block;
+  margin-right: 0.5em;
+}
+
+.article-title, .article-content, .article-meta {
   padding: 0;
   margin: 0;
-}
-
-#article-content {
+  padding-bottom: 1.5em;
+  border-bottom: var(--hr);
   margin-bottom: 1.5em;
 }
-
-.article-meta {
-  padding-top: 1.5em;
-  border-top: 1px dotted var(--glass-gall);
-  border-bottom: 1px dotted var(--glass-gall);
-  margin-bottom: 2em;
-  padding-bottom: 1em;
+div.last {
+  padding-bottom: 1.5em;
+  border-bottom: var(--hr);
 }
-.article-meta p {
+
+.article-title {
+  padding-top: 1em;
+}
+
+.article-meta div {
   color: gray;
   font-size: var(--small-font-size);
 }
-
-.button-bar {
-  display: flex;
-  align-terms: stretch;
-}
-.button-bar-button {
-  width: 50%;
+#source-info {
+  margin-bottom: 1em;
 }
 
 img {

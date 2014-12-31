@@ -18,7 +18,8 @@
   --magic-powder     : #EBD0B3;
   --true-blush       : #F2AEA4;
   --merry-cranesbill : #FC626E;
-  --short-bg-transition: background 0.18s linear;
+  --hr               : 1px solid #C3ECF2;
+  --light            : 300;
 }
 /* CSS Global Vars Include */
 
@@ -31,27 +32,19 @@ body {
   margin: 0 auto;
 }
 
-.article {
-  padding-bottom: 2em;
-  border-bottom: 1px dotted var(--glass-gall);
+.footer {
+  margin-top: 5em;
+  margin-bottom: 3em;
+  font-weight: var(--light);
 }
 
 .why-this-site {
-  margin-top: 2em;
-  margin-bottom: 2em;
-  padding: 1em;
-  background-color: var(--glass-gall);
-  border-radius: 1px;
-  border: 1px solid var(--glass-gall);
+  border-bottom: var(--hr);
+  padding-bottom: 0.2em;
 }
 
 .aixon-footer {
-  padding: 1em;
-  border-top: 1px dotted var(--glass-gall);
-  color: var(--primary-color);
-}
-
-.aixon-footer .flex-container {
   display: flex;
   justify-content: flex-end;
+  padding-top: 0.2em;
 }
