@@ -74,6 +74,9 @@ div.last {
 #source-info {
   margin-bottom: 1em;
 }
+.key-field {
+  color: black;
+}
 
 img {
   max-width: 100%;

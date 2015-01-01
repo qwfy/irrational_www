@@ -105,7 +105,7 @@ class ArticleViewerElement extends PolymerElement {
         ? '<a href="${model["author"]["link"]}" target="_blank">'
         + '${model["author"]["name"]}'
         + '</a>'
-        : '${model["author"]["name"]}';
+        : '<span class="key-field">${model["author"]["name"]}</span>';
         sourceInfo += '. ';
       }
       if (model['source'] != '') {
@@ -115,7 +115,15 @@ class ArticleViewerElement extends PolymerElement {
         sourceInfo += '</a>';
         sourceInfo += '. ';
       }
-      sourceInfo += 'Submitted on ${model["submit_time"]}.';
+      if (model['submitter']['name'] != '') {
+        sourceInfo += 'Submitted by ';
+        sourceInfo += model['submitter']['link'] != ''
+        ? '<a href="${model["submitter"]["link"]}" target="_blank">'
+        + '${model["submitter"]["name"]}'
+        + '</a>'
+        : '<span class="key-field">${model["submitter"]["name"]}</span>';
+        sourceInfo += ' on ${model["submit_time"]}.';
+      }
       shadowRoot.querySelector('#source-info')
       .setInnerHtml(sourceInfo, validator: htmlValidator);
 
