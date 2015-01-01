@@ -33,8 +33,8 @@ class ArticleViewerElement extends PolymerElement {
     window.onPopState.listen((PopStateEvent e) {
       e.preventDefault();
       String pathName = window.location.pathname;
-      if (pathName.startsWith('/articles/')) {
-        String title = pathName.substring('/articles/'.length);
+      if (pathName.startsWith('/beautiful/')) {
+        String title = pathName.substring('/beautiful/'.length);
         loadModel(null, null, null, title, false);
       } else if (pathName == '/') {
         window.location.reload();
@@ -129,7 +129,7 @@ class ArticleViewerElement extends PolymerElement {
 
       if (pushState) {
         window.history.pushState(null, model['title']
-        ,'/articles/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
+        ,'/beautiful/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
         (window.document as HtmlDocument).title = model['title'];
       }
 
