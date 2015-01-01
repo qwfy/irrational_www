@@ -197,12 +197,6 @@ class ArticleEditorElement extends PolymerElement {
       validateReault += 'Title is empty.';
       validateReault += '</span>';
     }
-    RegExp p = new RegExp(r'^([0-9a-zA-Z]+[\w- ]*)(,[ ]*[0-9a-zA-Z]+[\w- ]*)*$');
-    if (! p.hasMatch(model['tags'])) {
-      validateReault += '<br/><core-icon icon="error" style="color: orange;"></core-icon><span style="display: inline-block; margin-left: 0.5em;">';
-      validateReault += 'Tag format is not correct.';
-      validateReault += '</span>';
-    }
     if (model['content'] == '') {
       validateReault += '<br/><core-icon icon="error" style="color: orange;"></core-icon><span style="display: inline-block; margin-left: 0.5em;">';
       validateReault += 'Content is empty.';
@@ -210,6 +204,12 @@ class ArticleEditorElement extends PolymerElement {
     }
 
     if (mode == 'article') {
+      RegExp p = new RegExp(r'^([0-9a-zA-Z]+[\w- ]*)(,[ ]*[0-9a-zA-Z]+[\w- ]*)*$');
+      if (! p.hasMatch(model['tags'])) {
+        validateReault += '<br/><core-icon icon="error" style="color: orange;"></core-icon><span style="display: inline-block; margin-left: 0.5em;">';
+        validateReault += 'Tag format is not correct.';
+        validateReault += '</span>';
+      }
       if (model['submitter']['name'] == '') {
       validateReault += '<br/><core-icon icon="error" style="color: orange;"></core-icon><span style="display: inline-block; margin-left: 0.5em;">';
         validateReault += 'Submitter name is empty.';

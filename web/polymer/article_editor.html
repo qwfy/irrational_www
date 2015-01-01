@@ -17,8 +17,7 @@
   <h3>Share a beautiful thing with others</h3>
   <br/>
   This page is used to share a beautiful thing with others.
-  <br/><br/>
-  To share, fill out the following form, then click <em>SUBMIT DRAFT</em> at the bottom.
+  It can be photos, stories, or any other stuff, as long as you think it's beautiful.
   <br/><br/>
   Thanks for your share :)
 </div>
@@ -66,17 +65,6 @@
   </div>
 
   <div class="article-field">
-    <label class="field-label">Tags</label>
-    <div class="field-input">
-      <input value="{{model['tags']}}"
-             type="text"
-             placeholder="tag, another tag, yet another tag"
-             pattern="^([0-9a-zA-Z]+[\w- ]*)(,[ ]*[0-9a-zA-Z]+[\w- ]*)*$"
-             required>
-    </div>
-  </div>
-
-  <div class="article-field">
     <label class="field-label">Content of the post</label>
     <div class="field-comment">
       <div id="format-help-header">
@@ -107,30 +95,41 @@
   </div>
 
   <div class="article-field">
-    <label class="field-label">Your name (optional)</label>
+    <label class="field-label">Tags <span class="optional">optional</span></label>
+    <div class="field-input">
+      <input value="{{model['tags']}}"
+             type="text"
+             placeholder="tag, another tag, yet another tag"
+             pattern="^([0-9a-zA-Z]+[\w- ]*)(,[ ]*[0-9a-zA-Z]+[\w- ]*)*$">
+    </div>
+  </div>
+
+
+  <div class="article-field">
+    <label class="field-label">Your name <span class="optional">optional</span></label>
     <div class="field-input"><input value="{{model['submitter']['name']}}" type="text"></div>
   </div>
 
   <div class="article-field">
-    <label class="field-label">Your email (optional)</label>
+    <label class="field-label">Your email <span class="optional">optional</span></label>
     <div class="field-comment">It will be visible to the world.</div>
     <div class="field-input"><input value="{{model['submitter']['email']}}" type="email"></div>
   </div>
 
   <div class="article-field">
-    <label class="field-label">Your link (optional)</label>
+    <label class="field-label">Your link <span class="optional">optional</span></label>
     <div class="field-comment">A link to where the world can find you, like your Google+ page, your personal website, etc..</div>
     <div class="field-input"><input value="{{model['submitter']['link']}}" type="url" placeholder="https://"></div>
   </div>
 
   <div class="article-field">
-    <label class="field-label">Author name (optional)</label>
+    <label class="field-label">Author name <span class="optional">optional</span></label>
     <div class="field-comment">The original author of this beauty.</div>
     <div class="field-input"><input value="{{model['author']['name']}}" type="text"></div>
   </div>
 
   <div class="article-field">
-    <label class="field-label">Author email (optional)</label>
+    <label class="field-label">Author email <span class="optional">optional</span></label>
     <div class="field-comment">
       The original author's email, it will be visible to the world.
       Please don't fill this if you are not the original author.
@@ -139,13 +138,13 @@
   </div>
 
   <div class="article-field">
-    <label class="field-label">Author link (optional)</label>
+    <label class="field-label">Author link <span class="optional">optional</span></label>
     <div class="field-comment">A link to where the world can find the original author.</div>
     <div class="field-input"><input value="{{model['author']['link']}}" type="url" placeholder="https://"></div>
   </div>
 
   <div class="article-field">
-    <label class="field-label">Source (optional)</label>
+    <label class="field-label">Source <span class="optional">optional</span></label>
     <div class="field-comment">A link to where you found this beautiful stuff.</div>
     <div class="field-input"><input value="{{model['source']}}" type="url" placeholder="https://"></div>
   </div>
@@ -160,6 +159,8 @@
     </paper-button>
   </div>
   <div>
+    To share, click the <em>SUBMIT DRAFT</em> button above.
+    <br/><br/>
     The draft you submitted will not be visible to others
     until it's reviewed (and possibly re-edited).
     The review process is part of the quality control, and it can take up to 24 hours,
