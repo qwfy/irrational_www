@@ -36,6 +36,11 @@ class ArticleViewerElement extends PolymerElement {
       if (pathName.startsWith('/beautiful/')) {
         String title = pathName.substring('/beautiful/'.length);
         loadModel(null, null, null, title, false);
+        // re-enable the "Next" button if disabled
+        shadowRoot.querySelectorAll('paper-button[data-order="ordered"]').forEach((elem) {
+          elem.attributes.remove('disabled');
+          elem.querySelector('span').innerHtml = 'Next';
+        });
       } else if (pathName == '/') {
         window.location.reload();
       } else {
