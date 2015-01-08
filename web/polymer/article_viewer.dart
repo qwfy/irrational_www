@@ -2,11 +2,12 @@ library irrational.web.polymer.article_viewer;
 
 import 'package:irrational/irrational.dart';
 import 'package:markdown/markdown.dart' show markdownToHtml;
+import 'package:paper_elements/paper_checkbox.dart';
 
 @CustomTag('article-viewer')
 class ArticleViewerElement extends PolymerElement {
 
-  ArticleViewerElement.created() : super.created() { }
+  ArticleViewerElement.created() : super.created() {}
 
   @observable Map model = toObservable(
   { 'article_id'  : ''
@@ -21,6 +22,10 @@ class ArticleViewerElement extends PolymerElement {
   });
 
   @published String initial = null;
+
+  List<PaperCheckbox> allTags = [];
+
+  List excludes = ['00000000-0000-4000-8000-000000000000'];
 
   @override
   void attached() {
@@ -51,9 +56,14 @@ class ArticleViewerElement extends PolymerElement {
     window.onResize.listen((Event e) {
       resizeVideo(e);
     });
+
+    loadAllTags();
+
+    shadowRoot.querySelector('#tag-collapse-header').onClick.listen((_) {
+      shadowRoot.querySelector('#tag-collapse-content').toggle();
+    });
   }
 
-  String excludes = '00000000-0000-0000-0000-000000000000';
 
   void loadModel([ Event e, var detail, Node target
                  , String title=null
@@ -77,17 +87,17 @@ class ArticleViewerElement extends PolymerElement {
     }
 
     String url = '${WSGI}/articles/';
-    if (title != null) {
+    if (title != null) { // get an article directly by title
       url += title;
-    } else {
+    } else { // get current article's next
       String currentId = model['article_id'] == ''
-      ? '00000000-0000-0000-0000-000000000000'
+      ? excludes[0]
       : model['article_id'];
-      url += "all/id:${currentId}'next?";
+      url += "${getEnabledTags().join(', ')}/id:${currentId}'next?";
       if (clicked && (target as Element).dataset['order']=='random') {
-        url += 'order=random&excludes=${excludes}';
+        url += 'order=random&excludes=${excludes.join(',')}';
       } else {
-        url += 'order=oldest_first';
+        url += 'order=newest_first';
       }
     }
 
@@ -100,7 +110,7 @@ class ArticleViewerElement extends PolymerElement {
       .setInnerHtml(markdownToHtml(model['content']), validator: htmlValidator);
       resizeVideo();
 
-      excludes += ',${model['article_id']}';
+      excludes.add(model['article_id']);
 
       // Generate author or original source of this article
       String sourceInfo = '';
@@ -162,6 +172,7 @@ class ArticleViewerElement extends PolymerElement {
     });
   }
 
+
   void resizeVideo([Event e]) {
     // This will resize <iframe width= height=>, which is used by YouTube.
     int parentWidth = (this.parentNode as Element).clientWidth;
@@ -177,5 +188,67 @@ class ArticleViewerElement extends PolymerElement {
     });
   }
 
+
+  void loadAllTags() {
+
+    HttpRequest.request('${WSGI}/all_tags', method: 'GET')
+    .then((HttpRequest response) {
+      List tags = JSON.decode(response.responseText);
+
+      if (tags.length == 0) {
+        throw('No tags found.');
+      }
+
+      String html = '';
+      tags.forEach((String tag) {
+        html += '''
+          <span class="tag" data-selected="true">${tag}</span>
+          ''';
+      });
+      shadowRoot.querySelector('#all-tags')
+      .setInnerHtml(html, validator: htmlValidator);
+
+      shadowRoot.querySelector('#tag-collapse-content')
+      .querySelectorAll('.tag').forEach((tag) {
+        allTags.add(tag);
+        tag.onClick.listen((_) {
+          toggleTag(tag);
+        });
+
+      });
+
+    }).catchError((Error error) {
+      HtmlElement tagCollapseContent = shadowRoot.querySelector('#tag-collapse-content');
+      if (tagCollapseContent != null) {
+        tagCollapseContent.innerHtml = '';
+      }
+    });
+  }
+
+
+  void reverseTags(Event e, var detail, Node target) {
+    allTags.forEach((tag) => toggleTag(tag));
+  }
+
+  void toggleTag(Element tag) {
+    tag.dataset['selected'] = tag.dataset['selected'] == 'true'
+    ? 'false'
+    : 'true';
+  }
+
+  List getEnabledTags() {
+    List enabledTags = [];
+    allTags.forEach((tag) {
+      if (tag.dataset['selected'] == 'true') {
+        enabledTags.add(tag.innerHtml.toLowerCase());
+      }
+    });
+
+    if (enabledTags.length==0 || enabledTags.length==allTags.length) {
+      enabledTags = ['all'];
+    }
+
+    return enabledTags;
+  }
 
 }

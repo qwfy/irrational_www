@@ -23,12 +23,13 @@
 }
 /* CSS Global Vars Include */
 
-body {
-  margin: 1em;
+paper-shadow {
+  padding: 1em;
+  background-color: white;
 }
 
-p {
-  padding-bottom: 1.5em;
-  margin-bottom: 1.5em;
-  border-bottom: var(--hr);
+.detach {
+  position: fixed;
+  top: 1em;
+  z-index: 100;
 }

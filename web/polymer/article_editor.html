@@ -45,7 +45,6 @@
   </div>
 
   <div class="buttons">
-    <paper-button raised on-click="{{clearModel}}">Clear</paper-button>
     <paper-button raised on-click="{{load}}" id="load-oldest-draft">Load oldest draft</paper-button>
     <paper-button raised on-click="{{saveArticle}}">Save article/Approve draft</paper-button>
   </div>
@@ -69,9 +68,9 @@
     <div class="field-comment">
       <div id="format-help-header">
         <span>To post an image or a video, just paste its URL.</span>
-        <core-icon icon="arrow-drop-down-circle"></core-icon>
+        <core-icon icon="expand-more"></core-icon>
       </div>
-      <core-collapse id="format-help">
+      <core-collapse duration="0.1" id="format-help">
         <br/>
         Alternatively, you can use markdown for image,
         and YouTube embed code for video, if you know what they are.
@@ -157,9 +156,15 @@
       <core-icon icon="check"></core-icon>
       <span class="ml05">Submit draft</span>
     </paper-button>
+    <paper-button raised on-click="{{clearModel}}">
+      <core-icon icon="clear"></core-icon>
+      <span class="ml05">Clear</span>
+    </paper-button>
   </div>
   <div>
     To share, click the <em>SUBMIT DRAFT</em> button above.
+    <br/><br/>
+    To start over, click the <em>CLEAR</em> button above.
     <br/><br/>
     The draft you submitted will not be visible to others
     until it's reviewed (and possibly re-edited).

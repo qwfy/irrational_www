@@ -2,6 +2,7 @@ library irrational.web.polymer.article_editor;
 
 import 'package:irrational/irrational.dart';
 import 'package:core_elements/core_collapse.dart';
+import 'package:cookie/cookie.dart' as cookie;
 
 @CustomTag('article-editor')
 class ArticleEditorElement extends PolymerElement {
@@ -12,10 +13,15 @@ class ArticleEditorElement extends PolymerElement {
   void attached() {
     super.attached();
 
-    // show admin feature when has ?show_admin=yes in url
+    Duration dt = new DateTime.now().timeZoneOffset;
+    String tz = "${dt.isNegative?'-':'+'}"
+    + "${dt.inHours.toString().padLeft(2, '0')}:00";
+    cookie.set('timezone', tz, path: '/', expires: 365);
+
+    // show admin feature when has ?admin=true in url
     if (window.location.search.length >= 1) {
       Map query = Uri.splitQueryString(window.location.search.substring(1));
-      if (query.containsKey('show_admin') && query['show_admin']=='yes') {
+      if (query.containsKey('admin') && query['admin']=='true') {
         shadowRoot.querySelector('.admin-only').style.display = 'block';
       }
     }
@@ -54,6 +60,7 @@ class ArticleEditorElement extends PolymerElement {
     e.stopImmediatePropagation();
 
     result = 'Saving article ...';
+    String method = model['article_id']=='' ? 'POST' : 'PUT';
     String validateReault = validateForm(mode: 'article');
     if (validateReault != '') {
       result = validateReault;
@@ -66,13 +73,15 @@ class ArticleEditorElement extends PolymerElement {
     }
     HttpRequest.request
     ( url
-    , method: model['article_id']=='' ? 'POST' : 'PUT'
-    , sendData: mapToForm({'json_payload': JSON.encode(model)})
+    , method: method
+    , sendData: mapToPayload(model)
     ).then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
       model['article_id'] = resp['article_id'];
       draftId = ''; // avoid approving multiple times
-      result = resp['error_text'];
+      result = method == 'POST'
+      ? 'New article created.'
+      : 'Article updated.';
     }).catchError((Error error) {
       result = error.target.responseText;
     });
@@ -82,6 +91,9 @@ class ArticleEditorElement extends PolymerElement {
   void saveDraft(Event e, var detail, Node target) {
     e.stopImmediatePropagation();
     result = 'Saving draft ...';
+
+    draftId = '';
+
     String validateReault = validateForm(mode: 'draft');
     if (validateReault != '') {
       result = validateReault;
@@ -91,13 +103,13 @@ class ArticleEditorElement extends PolymerElement {
     HttpRequest.request
     ( '${WSGI}/drafts/'
     , method: 'POST'
-    , sendData: mapToForm({'json_payload': JSON.encode(model)})
+    , sendData: mapToPayload(model)
     ).then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
       draftId = resp['draft_id'];
-      var temp = resp['error_text'];
+      var temp = 'Draft accepted.';
       temp += ' You can see the review status of this draft ';
-      temp += '<a href="/draft_status/${resp["draft_id"]}" target="_blank">here</a>';
+      temp += '<a href="/draft_statuses/${resp["draft_id"]}" target="_blank">here</a>';
       temp += ' later.';
       temp += '<br/><br/>Thanks for your share.';
       result = temp;
@@ -117,10 +129,10 @@ class ArticleEditorElement extends PolymerElement {
     HttpRequest.request
     ( "${WSGI}/rejected_drafts/${draftId}"
     , method: 'PUT'
-    , sendData: mapToForm({'json_payload': JSON.encode({'reject_reason': rejectReason})})
+    , sendData: mapToPayload({'reject_reason': rejectReason})
     ).then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
-      result = resp['error_text'];
+      result = 'Draft rejected.';
     }).catchError((Error error) {
       result = error.target.responseText;
     });
@@ -161,13 +173,13 @@ class ArticleEditorElement extends PolymerElement {
 
     HttpRequest.request(url, method: 'GET').then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
-      result = resp['error_text'];
       if (targetId=='load-by-draft-id' || targetId=='load-oldest-draft') {
         model = toObservable(JSON.decode(resp['content']));
         draftId = resp['draft_id'];
       } else {
         model = toObservable(resp);
       }
+      result = 'Loaded.';
     }).catchError((Error error) {
       result = error.target.responseText;
     });

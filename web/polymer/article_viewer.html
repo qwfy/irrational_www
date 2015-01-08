@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <link rel="import" href="packages/polymer/polymer.html">
 <link rel="import" href="packages/paper_elements/paper_button.html">
+<link rel="import" href="packages/core_elements/core_collapse.html">
+<link rel="import" href="packages/core_elements/core_icon_button.html">
 <link rel="import" href="packages/core_elements/core_icon.html">
 <link rel="import" href="packages/core_elements/core_icons.html">
 <link rel="import" href="packages/core_elements/av_icons.html">
@@ -32,8 +34,31 @@
 </div>
 
 <div class="article-meta">
-  <div id="source-info"></div>
-  <div>Tags: {{model['tags']}}</div>
+  <div class="group" id="source-info"></div>
+  <div class="group">
+    <div id="tag-collapse-header">
+      <span>Tags: {{model['tags']}}</span>
+      <core-icon icon="expand-more"></core-icon>
+    </div>
+    <core-collapse id="tag-collapse-content" duration="0.08">
+      <div class="comment">Show posts in these tags:</div>
+      <div class="flex">
+
+        <div class="item">
+          <core-icon-button
+            icon="swap-horiz"
+            title="Reverse Tags"
+            on-click="{{reverseTags}}">
+          </core-icon-button>
+        </div>
+
+        <div id="all-tags">
+        </div>
+
+      </div>
+    </core-collapse>
+  </div>
+
 </div>
 
 <div class="buttons last">

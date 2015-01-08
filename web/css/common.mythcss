@@ -28,6 +28,28 @@ body {
   padding: 0;
 }
 
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.footer {
+  margin-top: 5em;
+  margin-bottom: 3em;
+  font-weight: var(--light);
+}
+
+.why-this-site {
+  border-bottom: var(--hr);
+  padding-bottom: 0.2em;
+}
+
+.aixon-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 0.2em;
+}
+
 * {
   font-family: var(--sans-serif);
   font-size: var(--normal-font-size);

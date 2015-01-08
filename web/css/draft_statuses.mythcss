@@ -24,11 +24,10 @@
 /* CSS Global Vars Include */
 
 body {
-  margin: 1em;
+  margin-top: 2em;
 }
 
-p {
-  padding-bottom: 1.5em;
-  margin-bottom: 1.5em;
-  border-bottom: var(--hr);
+td:first-child {
+  text-align: right;
+  padding-right: 1em;
 }

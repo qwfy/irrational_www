@@ -8,9 +8,7 @@ export 'dart:html';
 export 'dart:convert';
 export 'package:polymer/polymer.dart';
 
-
 final String WSGI = '/wsgi';
-
 
 abstract class HttpStatus {
   static const int CONTINUE                        = 100;
@@ -56,11 +54,9 @@ abstract class HttpStatus {
 }
 
 
-FormData mapToForm(Map source) {
+FormData mapToPayload(Map source) {
   FormData form = new FormData();
-  source.keys.forEach((key) {
-    form.append(key, source[key]);
-  });
+  form.append('payload', JSON.encode(source));
   return form;
 }
 
@@ -69,5 +65,7 @@ final NodeValidatorBuilder htmlValidator = new NodeValidatorBuilder.common()
 ..allowElement('a', attributes: ['href'])
 ..allowElement('img', attributes: ['src'])
 ..allowElement('iframe', attributes: ['allowfullscreen', 'src', 'frameborder'])
-..allowElement('span', attributes: ['style'])
-..allowElement('core-icon', attributes: ['icon', 'role', 'aria-label', 'style']);
+..allowElement('span', attributes: ['style', 'data-selected'])
+..allowElement('core-icon', attributes: ['icon', 'role', 'aria-label', 'style'])
+..allowElement('core-label', attributes: ['role', 'style'])
+..allowElement('paper-checkbox', attributes: ['tabindex', 'checked', 'aria-checked', 'role', 'aria-labelledby', 'for']);
