@@ -238,7 +238,9 @@ class ArticleViewerElement extends PolymerElement {
     ['random', 'ordered'].forEach((order) {
       shadowRoot.querySelectorAll('paper-button[data-order="${order}"]').forEach((elem) {
         elem.attributes.remove('disabled');
-        elem.querySelector('span').innerHtml = 'Next';
+        elem.querySelector('span').innerHtml = (order == 'random')
+        ? 'Random'
+        : 'Next';
       });
     });
   }
