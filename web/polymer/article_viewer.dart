@@ -2,7 +2,7 @@ library irrational.web.polymer.article_viewer;
 
 import 'package:irrational/irrational.dart';
 import 'package:markdown/markdown.dart' show markdownToHtml;
-import 'package:paper_elements/paper_checkbox.dart';
+
 
 @CustomTag('article-viewer')
 class ArticleViewerElement extends PolymerElement {
@@ -23,7 +23,7 @@ class ArticleViewerElement extends PolymerElement {
 
   @published String initial = null;
 
-  List<PaperCheckbox> allTags = [];
+  List<Element> allTags = [];
 
   List excludes = ['00000000-0000-4000-8000-000000000000'];
 
@@ -105,6 +105,7 @@ class ArticleViewerElement extends PolymerElement {
     .then((HttpRequest response) {
       Map resp = JSON.decode(response.responseText);
       model = resp;
+      (window.document as HtmlDocument).title = model['title'];
 
       shadowRoot.querySelector('.article-content')
       .setInnerHtml(markdownToHtml(model['content']), validator: htmlValidator);
@@ -145,7 +146,6 @@ class ArticleViewerElement extends PolymerElement {
       if (pushState) {
         window.history.pushState(null, model['title']
         ,'/beautiful/${model["title"].replaceAll(new RegExp(r'\ '), '_')}'.toLowerCase());
-        (window.document as HtmlDocument).title = model['title'];
       }
 
       // restore button status
