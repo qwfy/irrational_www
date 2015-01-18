@@ -234,6 +234,13 @@ class ArticleViewerElement extends PolymerElement {
     tag.dataset['selected'] = tag.dataset['selected'] == 'true'
     ? 'false'
     : 'true';
+    // re-enable the "Next" button and "Random" button if disabled
+    ['random', 'ordered'].forEach((order) {
+      shadowRoot.querySelectorAll('paper-button[data-order="${order}"]').forEach((elem) {
+        elem.attributes.remove('disabled');
+        elem.querySelector('span').innerHtml = 'Next';
+      });
+    });
   }
 
   List getEnabledTags() {
